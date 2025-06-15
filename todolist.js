@@ -38,5 +38,4 @@ function updateLocalStorage() {
   localStorage.setItem('todoList', JSON.stringify(List));
 }
 
-// Initial render
 toDoList();
