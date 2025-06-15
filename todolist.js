@@ -1,33 +1,58 @@
-let List = []
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+</head>
+<body>
+  <h1>ToDoList</h1>
 
-document.getElementById('button').onclick = function () {
-  const inputElement = document.querySelector('.input');
-  const inputValue = inputElement.value.trim();
+  <input type="text" class="input" placeholder="Type here">
+  <button id="button">Add</button>
+  <div class="div"></div>
 
-  List.push (inputValue);
-  
-  toDoList();
-}
+  <script>
+    let List = JSON.parse(localStorage.getItem('todoList')) || [];
 
-function toDoList () {
-  let elementHTML = '';
+    document.getElementById('button').onclick = function () {
+      const inputElement = document.querySelector('.input');
+      const inputValue = inputElement.value.trim();
 
-  for (let i = 0; i < List.length; i++) {
-    const Listvalue = List[i]
-    const html =
-      `<p>
-        ${Listvalue} 
-        <button onclick = 'deleteElement(${i});'>Delete</button>
-      </p>`
+      if (inputValue !== '') {
+        List.push(inputValue);
+        inputElement.value = '';
+        updateLocalStorage();
+        toDoList();
+      }
+    };
 
-    elementHTML += html;
-  }
+    function toDoList() {
+      let elementHTML = '';
 
-  document.querySelector('.div').innerHTML = elementHTML;
+      for (let i = 0; i < List.length; i++) {
+        const Listvalue = List[i];
+        const html =
+          `<p>
+            ${Listvalue}
+            <button onclick="deleteElement(${i});">Delete</button>
+          </p>`;
+        elementHTML += html;
+      }
 
-}
+      document.querySelector('.div').innerHTML = elementHTML;
+    }
 
-function deleteElement (i) {
-  List.splice(i,1);
-  toDoList();
-}
+    function deleteElement(i) {
+      List.splice(i, 1);
+      updateLocalStorage();
+      toDoList();
+    }
+
+    function updateLocalStorage() {
+      localStorage.setItem('todoList', JSON.stringify(List));
+    }
+
+    toDoList();
+  </script>
+</body>
+</html>
